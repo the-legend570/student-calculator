@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SGPA & CGPA Calculator - Sameena Soudagar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="number"] {
+      padding: 10px;
+      width: 40%;
+      margin: 5px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .result {
+      font-size: 20px;
+      color: #27ae60;
+      margin-top: 15px;
+    }
+    footer {
+      margin-top: 40px;
+      color: #888;
+      font-size: 14px;
+    }
+    .credit {
+      font-weight: bold;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>SGPA & CGPA Calculator</h1>
+  <h3 class="credit">Created by Sameena Soudagar</h3>
+  <div id="subjects">
+    <input type="text" placeholder="Subject Name">
+    <input type="number" placeholder="Marks">
+    <input type="number" placeholder="Credits">
+  </div>
+  <button onclick="addSubject()">+ Add Subject</button>
+  <button onclick="calculateSGPA()">Calculate SGPA</button>
+  <div class="result" id="sgpaResult"></div>
+  <hr style="margin: 30px 0;">
+  <h2>Convert SGPA to CGPA</h2>
+  <input type="number" id="singleSgpa" placeholder="Enter SGPA">
+  <button onclick="convertToCGPA()">Show CGPA</button>
+  <div class="result" id="cgpaResult"></div>
+</div>
+<footer>
+  &copy; 2025 | Website developed by <strong>Sameena Soudagar</strong>
+</footer>
+<script>
+  function addSubject() {
+    let div = document.createElement('div');
+    div.innerHTML = `
+      <input type="text" placeholder="Subject Name">
+      <input type="number" placeholder="Marks">
+      <input type="number" placeholder="Credits">
+    `;
+    document.getElementById('subjects').appendChild(div);
+  }
+  function calculateSGPA() {
+    let inputs = document.querySelectorAll('#subjects input');
+    let totalPoints = 0;
+    let totalCredits = 0;
+    for (let i = 0; i < inputs.length; i += 3) {
+      let marks = parseFloat(inputs[i + 1].value);
+      let credit = parseFloat(inputs[i + 2].value);
+      if (!isNaN(marks) && !isNaN(credit)) {
+        let gradePoint = getGradePoint(marks);
+        totalPoints += gradePoint * credit;
+        totalCredits += credit;
+      }
+    }
+    if (totalCredits === 0) {
+      document.getElementById('sgpaResult').innerText = "Please enter valid marks and credits.";
+      return;
+    }
+    let sgpa = (totalPoints / totalCredits).toFixed(2);
+    document.getElementById('sgpaResult').innerText = "Your SGPA is: " + sgpa;
+  }
+  function getGradePoint(marks) {
+    if (marks >= 90) return 10;
+    if (marks >= 80) return 9;
+    if (marks >= 70) return 8;
+    if (marks >= 60) return 7;
+    if (marks >= 50) return 6;
+    if (marks >= 40) return 5;
+    return 0;
+  }
+  function convertToCGPA() {
+    let sgpa = parseFloat(document.getElementById('singleSgpa').value);
+    if (isNaN(sgpa)) {
+      document.getElementById('cgpaResult').innerText = "Please enter a valid SGPA.";
+    } else {
+      document.getElementById('cgpaResult').innerText = "Your CGPA is: " + sgpa.toFixed(2);
+    }
+  }
+</script>
+</body>
+</html>
